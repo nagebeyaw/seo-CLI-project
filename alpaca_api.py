@@ -26,6 +26,19 @@ def get_alpaca_positions():
     response.raise_for_status()
     return response.json()
 
+def get_normalized_portfolio():
+  positions = get_alpaca_positions()
+  normalized_data = []
+  
+  for pos in positions:
+    normalized_data.append({
+      "asset": pos.get("symbol"),
+      "asset_type":"stock",
+      "quantity": float(pos.get("qty")),
+      "total_value": float(pos.get("market_value"))
+
+    })
+    return normalized_data
 if __name__ == "__main__":
     account = get_alpaca_account()
     print(f"Total Equity: ${account.get('equity')}")
