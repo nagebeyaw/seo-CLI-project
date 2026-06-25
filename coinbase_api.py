@@ -1,43 +1,44 @@
 import os
 import requests 
-from cdp.auth.utils.jwt import generate_jwt, JwtOptions
 from dotenv import load_dotenv
+from coinbase.rest import RESTClient
 
 load_dotenv()
 
 
-api_coinbase =  os.getenv("C_API_KEY")
-private_coinbase = os.getenv("C_PRIVATE_KEY")
+# key_coinbase =  os.getenv("C_API_KEY")
+# private_coinbase = os.getenv("C_PRIVATE_KEY")
 
-jwt_token = generate_jwt(JwtOptions(
-  api_key_id = api_coinbase,
-  api_key_secret = private_coinbase,
-  request_method = "GET",
-  request_host = "api.cdp.coinbase.com",
-  request_path = "/platform/v2/accounts",
-  expires_in =120
-))
+# client = RESTClient(
+#   api_key:key_coinbase,
+#   api_secret : private_coinbase,
+#   base_url : "api-public.sandbox.exchange.coinbase.com",
+#   sandbox:True
 
-URL ="https://api.cdp.coinbase.com/platform/v2/accounts"
-response = requests.get(
-  URL,
-  headers = {"Authorization": f"Bearer {jwt_token}", "Content-Type": "application/json"
+#)
+#print (client.get_product("BTC-USD"))
+#print(client.get_accounts())
+
+
+
+#print()
+
+client_api = "9DuVKqEsHc4VLRAAW5z6I2DvgkXiKvT3"
+URL = f"https://api.developer.coinbase.com/rpc/v1/base/{client_api}"
+
+
+response = requests.post(
+  URL, 
+  headers = {"Content-Type" : "application/json"},
+  json = {"jsonrpc": "2.0", "id":1, "method": "cdp_listBalances", "params": [{"address":"0x887B9075c779407c931F9dE7Bc14e5d3c4DB2417"}],
+  "pageToken" : "", "pageSize" :10
   }
 )
 
-#client_api = "9DuVKqEsHc4VLRAAW5z6I2DvgkXiKvT3"
-#URL = f"https://api.developer.coinbase.com/rpc/v1/base/{client_api}"
 
-
-#response = requests.post(
-#  URL, 
-#  headers = {"Content-Type" : "application/json"},
-#  json = {"jsonrpc": "2.0", "id":1, "method": "cdp_listBalances", "params": [{"address":"0x887B9075c779407c931F9dE7Bc14e5d3c4DB2417"}]
-#  }
-#)
 
 
 print(response.text)
 
 print(response.status_code)
-#response_data = response.json()
+response_data = response.json()
