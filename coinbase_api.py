@@ -23,7 +23,7 @@ load_dotenv()
 
 #print()
 
-client_api = "9DuVKqEsHc4VLRAAW5z6I2DvgkXiKvT3"
+client_api = os.getenv("COINBASE_API_KEY")
 BASE_URL = f"https://api.developer.coinbase.com/rpc/v1/base/{client_api}"
 Wallet_ADDRESS = "0xec0E36a6060339694C618ffFfcC9eC7da21Cb0CC"
 headers = {
